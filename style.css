@@ -1,17 +1,17 @@
 body {
-    background-color: #f8f9fa;
+	background-color: #f8f9fa;
 }
 .container {
-    max-width: 600px;
-    margin-top: 50px;
+	max-width: 600px;
+	margin-top: 50px;
 }
 section {
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background: white;
-    margin-bottom: 20px;
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	background: white;
+	margin-bottom: 20px;
 }
 button {
-    width: 100%;
+	width: 100%;
 }
