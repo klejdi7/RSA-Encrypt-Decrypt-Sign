@@ -111,7 +111,7 @@ function signAndEncrypt() {
     let message = document.getElementById("signedEncryptedMessage").value;
     let hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
     
-    alert("Signing Message Hash: " + hash);  // Debugging step
+    alert("Signing Message Hash: " + hash);
 
     let signed = cryptSign.sign(hash, CryptoJS.SHA256, "sha256");
 
@@ -121,7 +121,7 @@ function signAndEncrypt() {
         return;
     }
 
-    alert("Signed Message: " + signed.substring(0, 50) + "...");  // Show only first 50 chars
+    alert("Signed Message: " + signed.substring(0, 50) + "...");
 
     if (!publicKeyB) {
         alert("Public Key B is missing!");
@@ -131,12 +131,15 @@ function signAndEncrypt() {
     let cryptEncrypt = new JSEncrypt();
     cryptEncrypt.setPublicKey(publicKeyB);
 
-    // Encode before encryption to avoid length issues
-    let encodedSigned = btoa(signed); 
-    let encrypted = cryptEncrypt.encrypt(encodedSigned);
+    // **Fix: Hash the signed message before encrypting**
+    let signedHash = CryptoJS.SHA256(signed).toString(CryptoJS.enc.Hex);
+
+    alert("Hash of Signed Message: " + signedHash);
+
+    let encrypted = cryptEncrypt.encrypt(signedHash);
 
     if (!encrypted) {
-        alert("Encryption failed! The signed message might be too long.");
+        alert("Encryption failed! Even after hashing, message might be too long.");
         document.getElementById("signedEncryptedOutput").value = "Encryption failed!";
         return;
     }
