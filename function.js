@@ -110,27 +110,38 @@ function signAndEncrypt() {
 
     let message = document.getElementById("signedEncryptedMessage").value;
     let hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+    
+    alert("Signing Message Hash: " + hash);  // Debugging step
 
-    console.log("Signing Message Hash:", hash);
     let signed = cryptSign.sign(hash, CryptoJS.SHA256, "sha256");
 
     if (!signed) {
+        alert("Signing failed!");
         document.getElementById("signedEncryptedOutput").value = "Signing failed!";
         return;
     }
 
-    console.log("Signed Message:", signed);
+    alert("Signed Message: " + signed.substring(0, 50) + "...");  // Show only first 50 chars
+
+    if (!publicKeyB) {
+        alert("Public Key B is missing!");
+        return;
+    }
 
     let cryptEncrypt = new JSEncrypt();
     cryptEncrypt.setPublicKey(publicKeyB);
-    let encrypted = cryptEncrypt.encrypt(signed);
+
+    // Encode before encryption to avoid length issues
+    let encodedSigned = btoa(signed); 
+    let encrypted = cryptEncrypt.encrypt(encodedSigned);
 
     if (!encrypted) {
+        alert("Encryption failed! The signed message might be too long.");
         document.getElementById("signedEncryptedOutput").value = "Encryption failed!";
         return;
     }
 
-    console.log("Encrypted Message:", encrypted);
+    alert("Encryption Successful!");
     document.getElementById("signedEncryptedOutput").value = encrypted;
 }
 
