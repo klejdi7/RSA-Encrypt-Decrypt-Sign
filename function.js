@@ -33,7 +33,8 @@ function signMessage() {
     let crypt = new JSEncrypt();
     crypt.setPrivateKey(privateKeyA);
     let message = document.getElementById("signMessage").value;
-    document.getElementById("signOutput").value = crypt.sign(message, CryptoJS.SHA256, "sha256") || "Signing failed!";
+    let hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+    document.getElementById("signOutput").value = crypt.sign(hash, CryptoJS.SHA256, "sha256") || "Signing failed!";
 }
 
 // Verification
@@ -42,19 +43,21 @@ function verifySignature() {
     crypt.setPublicKey(publicKeyA);
     let message = document.getElementById("verifyMessage").value;
     let signature = document.getElementById("verifySignature").value;
-    document.getElementById("verifyOutput").value = crypt.verify(message, signature, CryptoJS.SHA256) ? "Valid Signature!" : "Invalid Signature!";
+    let hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+    document.getElementById("verifyOutput").value = crypt.verify(hash, signature, CryptoJS.SHA256) ? "Valid Signature!" : "Invalid Signature!";
 }
 
-// Signed & Encrypted
+// Signed & Encrypted Message
 function signAndEncrypt() {
     let cryptSign = new JSEncrypt();
     cryptSign.setPrivateKey(privateKeyA);
     let message = document.getElementById("signedEncryptedMessage").value;
-    let signed = cryptSign.sign(message, CryptoJS.SHA256, "sha256");
+    let hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+    let signed = cryptSign.sign(hash, CryptoJS.SHA256, "sha256");
 
     let cryptEncrypt = new JSEncrypt();
     cryptEncrypt.setPublicKey(publicKeyB);
-    document.getElementById("signedEncryptedOutput").value = cryptEncrypt.encrypt(signed);
+    document.getElementById("signedEncryptedOutput").value = cryptEncrypt.encrypt(signed) || "Signing & Encryption failed!";
 }
 
 // Decrypt & Verify
@@ -66,5 +69,8 @@ function decryptAndVerify() {
 
     let cryptVerify = new JSEncrypt();
     cryptVerify.setPublicKey(publicKeyA);
-    document.getElementById("decryptAndVerifyOutput").value = cryptVerify.verify(decrypted, decrypted, CryptoJS.SHA256) ? "Signature Verified!" : "Signature Invalid!";
+    let hash = CryptoJS.SHA256(decrypted).toString(CryptoJS.enc.Hex);
+    let isValid = cryptVerify.verify(hash, decrypted, CryptoJS.SHA256);
+
+    document.getElementById("decryptAndVerifyOutput").value = isValid ? "Signature Verified!" : "Signature Invalid!";
 }
