@@ -145,20 +145,23 @@ function decryptAndVerify() {
     let cryptDecrypt = new JSEncrypt();
     cryptDecrypt.setPrivateKey(privateKeyB);
     let encrypted = document.getElementById("decryptAndVerifyInput").value;
-    let decrypted = cryptDecrypt.decrypt(encrypted);
+    
+    let decryptedHash = cryptDecrypt.decrypt(encrypted);
 
-    if (!decrypted) {
+    if (!decryptedHash) {
         document.getElementById("decryptAndVerifyOutput").value = "Decryption failed!";
         return;
     }
 
-    console.log("Decrypted Signed Message:", decrypted);
-
     let cryptVerify = new JSEncrypt();
     cryptVerify.setPublicKey(publicKeyA);
-    let hash = CryptoJS.SHA256(decrypted).toString(CryptoJS.enc.Hex);
-    let isValid = cryptVerify.verify(hash, decrypted, CryptoJS.SHA256);
 
-    console.log("Signature Valid:", isValid);
-    document.getElementById("decryptAndVerifyOutput").value = isValid ? "Signature Verified!" : "Signature Invalid!";
+    let originalMessage = document.getElementById("originalMessageForVerification").value;
+    let originalHash = CryptoJS.SHA256(originalMessage).toString(CryptoJS.enc.Hex);
+
+    if (originalHash === decryptedHash) {
+        document.getElementById("decryptAndVerifyOutput").value = "Signature Verified!";
+    } else {
+        document.getElementById("decryptAndVerifyOutput").value = "Invalid Signature!";
+    }
 }
