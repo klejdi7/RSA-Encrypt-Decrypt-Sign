@@ -144,24 +144,40 @@ function decryptAndVerify() {
 
     let cryptDecrypt = new JSEncrypt();
     cryptDecrypt.setPrivateKey(privateKeyB);
-    let encrypted = document.getElementById("decryptAndVerifyInput").value;
     
+    let encrypted = document.getElementById("decryptAndVerifyInput").value;
+    if (!encrypted) {
+        alert("Please enter an encrypted message!");
+        return;
+    }
+
     let decryptedHash = cryptDecrypt.decrypt(encrypted);
 
     if (!decryptedHash) {
+        alert("Decryption failed!");
         document.getElementById("decryptAndVerifyOutput").value = "Decryption failed!";
         return;
     }
+
+    alert("Decryption Successful! Decrypted Hash: " + decryptedHash);
 
     let cryptVerify = new JSEncrypt();
     cryptVerify.setPublicKey(publicKeyA);
 
     let originalMessage = document.getElementById("originalMessageForVerification").value;
+    if (!originalMessage) {
+        alert("Please enter the original message!");
+        return;
+    }
+
     let originalHash = CryptoJS.SHA256(originalMessage).toString(CryptoJS.enc.Hex);
+    alert("Original Message Hash: " + originalHash);
 
     if (originalHash === decryptedHash) {
+        alert("Signature Verified!");
         document.getElementById("decryptAndVerifyOutput").value = "Signature Verified!";
     } else {
+        alert("Invalid Signature!");
         document.getElementById("decryptAndVerifyOutput").value = "Invalid Signature!";
     }
 }
