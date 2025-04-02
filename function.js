@@ -173,11 +173,15 @@ function decryptAndVerify() {
     let originalHash = CryptoJS.SHA256(originalMessage).toString(CryptoJS.enc.Hex);
     alert("Original Message Hash: " + originalHash);
 
+    let outputBox = document.getElementById("decryptAndVerifyOutput");
+
     if (originalHash === decryptedHash) {
         alert("Signature Verified!");
-        document.getElementById("decryptAndVerifyOutput").value = "Signature Verified!";
+        outputBox.value = "Signature Verified!";
+        outputBox.style.display = "block"; // Ensure visibility
     } else {
         alert("Invalid Signature!");
-        document.getElementById("decryptAndVerifyOutput").value = "Invalid Signature!";
+        outputBox.value = "Invalid Signature!";
+        outputBox.style.display = "block"; // Ensure visibility
     }
 }
