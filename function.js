@@ -109,31 +109,32 @@ function signAndEncrypt() {
     cryptSign.setPrivateKey(privateKeyA);
 
     let message = document.getElementById("signedEncryptedMessage").value;
-    let hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+    let originalHash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
 
-    let signed = cryptSign.sign(hash, CryptoJS.SHA256, "sha256");
+    let signed = cryptSign.sign(originalHash, CryptoJS.SHA256, "sha256");
 
     if (!signed) {
+        alert("Signing failed!");
         document.getElementById("signedEncryptedOutput").value = "Signing failed!";
         return;
     }
 
+
     let cryptEncrypt = new JSEncrypt();
     cryptEncrypt.setPublicKey(publicKeyB);
 
-    // Hash the signed message before encrypting
-    let signedHash = CryptoJS.SHA256(signed).toString(CryptoJS.enc.Hex);
-
-    let encrypted = cryptEncrypt.encrypt(signedHash);
+    // **Fix: Encrypt the original hash, not the signature**
+    let encrypted = cryptEncrypt.encrypt(originalHash);
 
     if (!encrypted) {
+        alert("Encryption failed!");
         document.getElementById("signedEncryptedOutput").value = "Encryption failed!";
         return;
     }
 
-    alert("Encryption Successful!");  
     document.getElementById("signedEncryptedOutput").value = encrypted;
 }
+
 
 // Decrypt a signed message and verify it
 function decryptAndVerify() {
@@ -159,10 +160,6 @@ function decryptAndVerify() {
         return;
     }
 
-    alert("Decryption Successful! Decrypted Hash: " + decryptedHash);
-
-    let cryptVerify = new JSEncrypt();
-    cryptVerify.setPublicKey(publicKeyA);
 
     let originalMessage = document.getElementById("originalMessageForVerification").value;
     if (!originalMessage) {
@@ -171,17 +168,10 @@ function decryptAndVerify() {
     }
 
     let originalHash = CryptoJS.SHA256(originalMessage).toString(CryptoJS.enc.Hex);
-    alert("Original Message Hash: " + originalHash);
-
-    let outputBox = document.getElementById("decryptAndVerifyOutput");
 
     if (originalHash === decryptedHash) {
-        alert("Signature Verified!");
-        outputBox.value = "Signature Verified!";
-        outputBox.style.display = "block"; // Ensure visibility
+        document.getElementById("decryptAndVerifyOutput").value = "Signature Verified!";
     } else {
-        alert("Invalid Signature!");
-        outputBox.value = "Invalid Signature!";
-        outputBox.style.display = "block"; // Ensure visibility
+        document.getElementById("decryptAndVerifyOutput").value = "Invalid Signature!";
     }
 }

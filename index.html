@@ -20,11 +20,12 @@
 
         <!-- Encryption & Decryption -->
         <section>
-            <h4>2. Encryption & Decryption (RSA)</h4>
+            <h4>2. Encryption (RSA)</h4>
             <textarea id="encryptMessage" class="form-control" rows="3" placeholder="Enter message to encrypt"></textarea>
             <button class="btn btn-success mt-2" onclick="encryptMessage()">Encrypt with Public Key (B)</button>
             <textarea id="encryptOutput" class="form-control mt-2" rows="3" readonly></textarea>
 
+            <h4> Decryption (RSA)</h4>
             <textarea id="decryptInput" class="form-control mt-2" rows="3" placeholder="Enter encrypted message"></textarea>
             <button class="btn btn-warning mt-2" onclick="decryptMessage()">Decrypt with Private Key (B)</button>
             <textarea id="decryptOutput" class="form-control mt-2" rows="3" readonly></textarea>
@@ -37,6 +38,7 @@
             <button class="btn btn-info mt-2" onclick="signMessage()">Sign with Private Key (A)</button>
             <textarea id="signOutput" class="form-control mt-2" rows="3" readonly></textarea>
 
+            <h4>Verify with Public Key (A)</h4>
             <textarea id="verifyMessage" class="form-control mt-2" rows="3" placeholder="Enter original message"></textarea>
             <textarea id="verifySignature" class="form-control mt-2" rows="3" placeholder="Enter signature"></textarea>
             <button class="btn btn-danger mt-2" onclick="verifySignature()">Verify with Public Key (A)</button>
@@ -50,8 +52,10 @@
             <button class="btn btn-dark mt-2" onclick="signAndEncrypt()">Sign & Encrypt</button>
             <textarea id="signedEncryptedOutput" class="form-control mt-2" rows="3" readonly></textarea>
 
+            <h4>Decrypt & Verify Message</h4>
+            <textarea id="originalMessageForVerification" class="form-control mt-2" rows="3" placeholder="Enter original message"></textarea>
             <textarea id="decryptAndVerifyInput" class="form-control mt-2" rows="3" placeholder="Enter signed & encrypted message"></textarea>
-            <button class="btn btn-secondary mt-2" onclick="decryptAndVerify()">Decrypt & Verify</button>
+            <button class="btn btn-dark mt-2" onclick="decryptAndVerify()">Decrypt & Verify</button>
             <textarea id="decryptAndVerifyOutput" class="form-control mt-2" rows="3" readonly></textarea>
         </section>
     </div>
